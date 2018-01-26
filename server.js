@@ -32,7 +32,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-var server = app.listen(cross.NormalizePort(PORT));
+var server = app.listen(PORT);
 var io = require('socket.io').listen(server, {
     log: false,
     agent: false,
