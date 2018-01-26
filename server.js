@@ -1,36 +1,21 @@
 'use strict';
 
-var express = require('express');
-var bodyParser = require('body-parser');
-var app = express();
-var io = require('socket.io')(server);
+const express = require('express');
+const socketIO = require('socket.io');
+const path = require('path');
 
-app.use(bodyParser.json());
-app.set('port', process.env.PORT || 8080);
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
+const PORT = process.env.PORT || 3000;
+const INDEX = path.join(__dirname, 'index.html');
+
+const server = express()
+  .use((req, res) => res.sendFile(INDEX) )
+  .listen(PORT, () => console.log(`Listening on ${ PORT }`));
+
+const io = socketIO(server);
+
+io.on('connection', (socket) => {
+  console.log('Client connected');
+  socket.on('disconnect', () => console.log('Client disconnected'));
 });
 
-app.use(express.static("www")); 
-
-//app.listen(app.get('port'), function () {
-//  console.log("You're a wizard, Harry. I'm a what? Yes, a wizard, on port", app.get('port'));
-//});
-
-var server = require('http').createServer(app);
-var io = require('socket.io')(server, {origins: '*:*'});
-
-server.listen(app.get('port'), function(){
-  console.log('listening on *:4200');
-});
-
-io.on('connection', function(socket) {  
-  console.log('++ a client connected...');
-
-  socket.on('com.deceptacon.event', function (arr) {
-    console.log('++ com.deceptacon.event', arr.event);
-    io.sockets.emit(arr.event, arr.data);
-  });
-});
+setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
