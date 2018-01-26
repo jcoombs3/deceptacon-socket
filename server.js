@@ -1,7 +1,8 @@
 var express = require('express');
+var socketIO = require('socket.io');
 const server = express()
   .use((req, res) => res.sendFile(INDEX) )
-  .listen(4200, () => console.log(`Listening on ${ 4200 }`));
+  .listen(4200, () => console.log(`Listening on 4200`));
 
 const io = socketIO(server);
 
