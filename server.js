@@ -6,7 +6,7 @@ var cors = require('cors');
 var express = require('express');
 var app = express();
 
-const PORT = 4200;
+const PORT = process.env.PORT || 4200;
 
 // use body parser so we can get info from POST and/or URL parameters
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
