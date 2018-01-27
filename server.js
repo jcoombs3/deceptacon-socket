@@ -7,7 +7,11 @@ io.on('connection', (socket) => {
   
   socket.on('com.deceptacon.event', function (arr) {
     console.log('++ com.deceptacon.event', arr.event);
-    socket.broadcast.emit(arr.event, arr.data);
+    if ((arr.event).includes('game-ended-')) {
+      io.sockets.emit(arr.event, arr.data);
+    } else {
+      socket.broadcast.emit(arr.event, arr.data);
+    }
   });
 });
  
