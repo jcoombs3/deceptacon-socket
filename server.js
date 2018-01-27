@@ -7,7 +7,7 @@ io.on('connection', (socket) => {
   
   socket.on('com.deceptacon.event', function (arr) {
     console.log('++ com.deceptacon.event', arr.event);
-    io.sockets.emit(arr.event, arr.data);
+    socket.broadcast.emit(arr.event, arr.data);
   });
 });
  
